@@ -21,10 +21,10 @@ from tqdm import tqdm
 import cv2
 from PIL import Image
 
-from .db_helpers import init_db, get_metadata_map, upsert_entries, update_filepath
-from .image_processing import worker_process_file, hamming_distance_hex
-from .utils import log_message, group_duplicates, safe_move_and_update, gather_files_with_depth
-from .constants import DB_NAME, LOG_FILE, DUP_DIR_NAME
+from db_helpers import init_db, get_metadata_map, upsert_entries, update_filepath
+from image_processing import worker_process_file, hamming_distance_hex
+from utils import log_message, group_duplicates, safe_move_and_update, gather_files_with_depth
+from constants import DB_NAME, LOG_FILE, DUP_DIR_NAME
 
 def main():
     parser = argparse.ArgumentParser(description="Duplicate detection with SQLite cache and robust read failovers.")

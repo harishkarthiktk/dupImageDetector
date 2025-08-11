@@ -15,7 +15,7 @@ try:
 except Exception:
     imageio = None
 
-from .constants import SUPPORTED_EXTS
+from constants import SUPPORTED_EXTS
 
 def safe_read_with_cv2(path):
     try:

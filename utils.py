@@ -2,8 +2,8 @@ import os
 import shutil
 import time
 from pathlib import Path
-from .constants import DUP_DIR_NAME, LOG_FILE, SUPPORTED_EXTS
-from .image_processing import hamming_distance_hex
+from constants import DUP_DIR_NAME, LOG_FILE, SUPPORTED_EXTS
+from image_processing import hamming_distance_hex
 
 def log_message(workdir: Path, msg: str):
     log_path = workdir / LOG_FILE
@@ -73,3 +73,23 @@ def safe_move_and_update(conn, workdir: Path, rel_src, rel_dst_dir):
     new_mtime = dst_full.stat().st_mtime
     update_filepath(conn, rel_src, new_rel, new_size, new_mtime)
     return new_rel
+
+def safe_move(src, dest_folder):
+    """
+    Moves a file to a destination folder, handling name conflicts by appending a number.
+    This is a general-purpose move function without DB updates.
+    """
+    os.makedirs(dest_folder, exist_ok=True)
+    base = os.path.basename(src)
+    dest_path = os.path.join(dest_folder, base)
+    if os.path.exists(dest_path):
+        name, ext = os.path.splitext(base)
+        i = 1
+        while True:
+            new_name = f"{name}_{i}{ext}"
+            new_dest = os.path.join(dest_folder, new_name)
+            if not os.path.exists(new_dest):
+                dest_path = new_dest
+                break
+            i += 1
+    shutil.move(src, dest_path)
